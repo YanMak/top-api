@@ -16,3 +16,8 @@ jobs:
           registry: ghcr.io
           username: ${{github.actor}}
           password: ${{secrets.GITHUB_TOKEN}}
+
+      - name: 'Build Inventory Image'
+        run: |
+          docker build . --tag ghcr.io/yanmak/top-api/top-api:latest
+          docker push ghcr.io/yanmak/top-api/top-api:latest
