@@ -19,5 +19,5 @@ jobs:
 
       - name: 'Build Inventory Image'
         run: |
-          docker build . --tag ghcr.io/yanmak/top-api/top-api:latest
-          docker push ghcr.io/yanmak/top-api/top-api:latest
+          docker build . --tag ghcr.io/yanmak/top-api:latest
+          docker push ghcr.io/yanmak/top-api:latest
