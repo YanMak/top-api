@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { AuthDto } from './dtos/auth.dto';
 import { AuthService } from './auth.service';
+import logger from '../logger/logger';
 
 @Controller('auth')
 export class AuthController {
@@ -24,6 +25,7 @@ export class AuthController {
   @Post('login')
   async login(@Body() { login, password }: AuthDto) {
     const { email } = await this.authService.validateUser(login, password);
+    logger.info(await this.authService.login(email));
     return this.authService.login(email);
   }
 }

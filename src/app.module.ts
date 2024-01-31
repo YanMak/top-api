@@ -8,6 +8,7 @@ import { ReviewModule } from './review/review.module';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { getMongoConfig } from './configs/mongo/mongo.config';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { getMongoConfig } from './configs/mongo/mongo.config';
     ReviewModule,
     ContentProviderModule,
     MongooseModule.forRootAsync(getMongoConfig()),
+    SearchModule,
   ],
   controllers: [],
   providers: [AppService],

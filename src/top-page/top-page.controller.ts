@@ -23,10 +23,19 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 export class TopPageController {
   constructor(private readonly topPageService: TopPageService) {}
 
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Post('create')
   async create(@Body() dto: CreateTopPageDto) {
-    return this.topPageService.create(dto);
+    //return this.topPageService.create(dto);
+    const savedTopPage = await this.topPageService.create(dto);
+    //this.topPageSearchService.indexTopPage(savedTopPage);
+    return savedTopPage;
+  }
+
+  @Get('searchForPosts/:search')
+  async searchForPosts(@Param('search') search: string) {
+    const res = this.topPageService.searchForPosts(search);
+    return res;
   }
 
   @UseGuards(JwtAuthGuard)

@@ -4,16 +4,35 @@ import { TopPageModel } from './models/top-page.model';
 import { CreateTopPageDto } from './dtos/create-top-page.dto';
 import { Model, Types } from 'mongoose';
 import { FindTopPageDto } from './dtos/find-top-page.dto';
+import TopPageSearchService from './search/top-page-search.service';
 
 @Injectable()
 export class TopPageService {
   constructor(
     @InjectModel(TopPageModel.name)
     private readonly topPageModel: Model<TopPageModel>,
+    private readonly topPageSearchService: TopPageSearchService,
   ) {}
 
   async create(dto: CreateTopPageDto) {
-    return this.topPageModel.create(dto);
+    const doc = await this.topPageModel.create(dto);
+
+    const savedSearch = await this.topPageSearchService.indexTopPage(doc);
+    console.log(savedSearch);
+    return doc;
+  }
+
+  async searchForPosts(text: string) {
+    const results = await this.topPageSearchService.search(text);
+    console.log(results);
+    return results;
+    /*const ids = results.map((result) => result.hits.hits.id);
+    if (!ids.length) {
+      return [];
+    }
+    return this.postsRepository.find({
+      where: { id: In(ids) },
+    });*/
   }
 
   async findById(id: string) {
@@ -25,13 +44,22 @@ export class TopPageService {
   }
 
   async update(id: string, dto: CreateTopPageDto) {
-    return this.topPageModel
+    const doc = await this.topPageModel
       .findByIdAndUpdate(new Types.ObjectId(id), dto)
       .exec();
+
+    const elasticDoc = await this.topPageSearchService.update(doc);
+    console.log(elasticDoc);
+
+    return doc;
   }
 
   async delete(id: string) {
-    return this.topPageModel.findByIdAndDelete(new Types.ObjectId(id)).exec();
+    const doc = this.topPageModel
+      .findByIdAndDelete(new Types.ObjectId(id))
+      .exec();
+    await this.topPageSearchService.remove(id);
+    return doc;
   }
 
   async findByCategory(dto: FindTopPageDto) {
