@@ -47,7 +47,7 @@ export class ContentProviderController {
       originalname + '_sharp.webp',
     );
 
-    await this.fileConvertService.convertToWebpTinifyFromfile(res[0].url);
+    //await this.fileConvertService.convertToWebpTinifyFromfile(res[0].url);
 
     /*
     const buffer_tinify = await this.fileConvertService.convertToWebpTinify(
