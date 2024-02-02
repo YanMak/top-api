@@ -39,6 +39,10 @@ export class TopPageService {
     return this.topPageModel.findById(new Types.ObjectId(id)).exec();
   }
 
+  async findAll() {
+    return this.topPageModel.find({}).exec();
+  }
+
   async findByAlias(alias: string) {
     return this.topPageModel.findOne({ alias }).exec();
   }

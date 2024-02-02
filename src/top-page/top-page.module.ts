@@ -16,5 +16,6 @@ import { SearchModule } from 'src/search/search.module';
   ],
   controllers: [TopPageController],
   providers: [TopPageService, TopPageSearchService],
+  exports: [TopPageService],
 })
 export class TopPageModule {}
