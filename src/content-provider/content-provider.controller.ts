@@ -12,6 +12,7 @@ import { FileElementResponse } from '../dtos/file-element.response';
 import { ContentProviderService } from './content-provider.service';
 import { S3Service } from './s3/s3.service';
 import { FileConvertService } from './file-convert-service/file-convert.service';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('content-service')
 export class ContentProviderController {
@@ -19,6 +20,7 @@ export class ContentProviderController {
     private readonly fileService: ContentProviderService,
     private readonly s3Service: S3Service,
     private readonly fileConvertService: FileConvertService,
+    private readonly configService: ConfigService,
   ) {}
 
   @Get('ping')
@@ -32,15 +34,17 @@ export class ContentProviderController {
   async uploadFile(
     @UploadedFile() file: Express.Multer.File,
   ): Promise<FileElementResponse[]> {
+    console.log('controller async uploadFile(');
+    console.log('file');
+    console.log(file);
     const res = await this.fileService.saveFile([file], 'media', false);
     const buffer_sharp = await this.fileConvertService.convertToWebp(
       file.buffer,
     );
-    console.log('file');
-    console.log(file);
     console.log('saved file');
     console.log(res);
     //const res3 = await this.s3Service.uploadFile(file);
+    console.log(`original name ${file.originalname}`);
     const [originalname] = file.originalname.split('.');
     await this.s3Service.uploadBuffer(
       buffer_sharp,

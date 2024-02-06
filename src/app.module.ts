@@ -9,6 +9,8 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { getMongoConfig } from './configs/mongo/mongo.config';
 import { SearchModule } from './search/search.module';
+import { SitemapModule } from './sitemap/sitemap.module';
+import { LoyaltyModule } from './loyalty/loyalty.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { SearchModule } from './search/search.module';
     ContentProviderModule,
     MongooseModule.forRootAsync(getMongoConfig()),
     SearchModule,
+    SitemapModule,
+    LoyaltyModule,
   ],
   controllers: [],
   providers: [AppService],
